@@ -1,0 +1,27 @@
+# General
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Environment
+.env
+*.env
+
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Python cache
+*.egg-info/
+dist/
+build/
+.cache/
+
+# Editor configs
+.vscode/
+.idea/
+*.swp
+.DS_Store
