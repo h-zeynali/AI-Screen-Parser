@@ -1,4 +1,6 @@
+// FILE: hooks\useVisibleProducts.js
 import { useEffect, useState } from "react";
+
 function getPositionLabel(rect, winWidth, winHeight) {
   const centerX = rect.left + rect.width / 2;
   const centerY = rect.top + rect.height / 2;
@@ -26,43 +28,32 @@ const useVisibleProducts = (products, refs) => {
         .map(p => {
           const rect = refs.current[p.id]?.getBoundingClientRect();
           if (!rect) return null;
-          const isVisible =
-            rect.top >= 0 &&
-            rect.bottom <= vpHeight &&
-            rect.left >= 0 &&
-            rect.right <= vpWidth;
-          return isVisible ? p : null;
-        })
-/*         const visibleItems = refs.current.map((ref, i) => {
-        if (!ref) return null;
-        const rect = ref.getBoundingClientRect();
 
-        if (
-          rect.top < window.innerHeight &&
-          rect.bottom > 0 &&
-          rect.left < window.innerWidth &&
-          rect.right > 0
-        ) {
+          const intersects =
+            rect.bottom > 0 &&
+            rect.right > 0 &&
+            rect.top < vpHeight &&
+            rect.left < vpWidth;
+
+          if (!intersects) return null;
+
           return {
-            ...products[i],
+            ...p,
             boundingBox: {
               top: rect.top,
               left: rect.left,
               width: rect.width,
               height: rect.height,
             },
-            positionLabel: getPositionLabel(rect, window.innerWidth, window.innerHeight),
+            positionLabel: getPositionLabel(rect, vpWidth, vpHeight),
           };
-        }
-        return null;
-        }) */
+        })
         .filter(Boolean);
 
       setVisible(visibleItems);
     };
 
     updateVisibility();
-
     window.addEventListener("scroll", updateVisibility);
     window.addEventListener("resize", updateVisibility);
     return () => {

@@ -20,12 +20,20 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+class BoundingBox(BaseModel):
+    top: float
+    left: float
+    width: float
+    height: float
+
 class Product(BaseModel):
     id: int
     title: str
     price: str
     brand: str
     image: str
+    positionLabel: str
+    boundingBox: BoundingBox
 
 class QueryRequest(BaseModel):
     question: str
@@ -33,15 +41,25 @@ class QueryRequest(BaseModel):
 
 @app.post("/ask")
 async def ask_question(request: QueryRequest):
+
+
+    product_descriptions = "\\n".join([
+        f"- {p.title} by {p.brand}, priced at {p.price}, located in the {p.positionLabel} (bounding box: top={p.boundingBox.top:.0f}, left={p.boundingBox.left:.0f}, width={p.boundingBox.width:.0f}, height={p.boundingBox.height:.0f})"
+        for p in request.visible_products
+    ])
+
     prompt = f"""
-    Here is a list of visible products on a webpage:
+    You are an assistant that answers questions about store products currently visible on a webpage.
+    Each product has general details and spatial position (where it appears on the screen).
 
-    {[f"{p.title} by {p.brand}, priced at {p.price}" for p in request.visible_products]}
+    Visible products:
+    {product_descriptions}
 
-    The user asked: "{request.question}"
+    User question: "{request.question}"
 
-    Please answer based only on these products and their layout position if applicable.
+    Answer based only on the visible products and their layout.
     """
+
     client = genai.Client(api_key=api_key)
 
     response = client.models.generate_content(
