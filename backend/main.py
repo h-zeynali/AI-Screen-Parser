@@ -57,7 +57,9 @@ async def ask_question(request: QueryRequest):
 
     User question: "{request.question}"
 
-    Answer based only on the visible products and their layout.
+    Answer in a clear, friendly tone, human read friendly and only based on the visible products and their layout.
+    Use tab, new line , italic and bold for important item like price , product name and etc in which distiguishable from sentence.
+    dont use start sighn (*) in answer use spave instead.
     """
 
     client = genai.Client(api_key=api_key)
