@@ -1,4 +1,18 @@
 import { useEffect, useState } from "react";
+function getPositionLabel(rect, winWidth, winHeight) {
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  let vertical = centerY < winHeight / 3 ? "top"
+               : centerY < (2 * winHeight) / 3 ? "middle"
+               : "bottom";
+
+  let horizontal = centerX < winWidth / 3 ? "left"
+                 : centerX < (2 * winWidth) / 3 ? "center"
+                 : "right";
+
+  return `${vertical} ${horizontal}`;
+}
 
 const useVisibleProducts = (products, refs) => {
   const [visible, setVisible] = useState([]);
@@ -8,7 +22,7 @@ const useVisibleProducts = (products, refs) => {
       const vpHeight = window.innerHeight;
       const vpWidth = window.innerWidth;
 
-/*       const visibleItems = products
+      const visibleItems = products
         .map(p => {
           const rect = refs.current[p.id]?.getBoundingClientRect();
           if (!rect) return null;
@@ -18,8 +32,8 @@ const useVisibleProducts = (products, refs) => {
             rect.left >= 0 &&
             rect.right <= vpWidth;
           return isVisible ? p : null;
-        }) */
-        const visibleItems = refs.current.map((ref, i) => {
+        })
+/*         const visibleItems = refs.current.map((ref, i) => {
         if (!ref) return null;
         const rect = ref.getBoundingClientRect();
 
@@ -30,7 +44,7 @@ const useVisibleProducts = (products, refs) => {
           rect.right > 0
         ) {
           return {
-            ...testProducts[i],
+            ...products[i],
             boundingBox: {
               top: rect.top,
               left: rect.left,
@@ -41,7 +55,8 @@ const useVisibleProducts = (products, refs) => {
           };
         }
         return null;
-        }).filter(Boolean);
+        }) */
+        .filter(Boolean);
 
       setVisible(visibleItems);
     };
