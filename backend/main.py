@@ -42,10 +42,17 @@ class QueryRequest(BaseModel):
 @app.post("/ask")
 async def ask_question(request: QueryRequest):
 
+    products = request.visible_products
+    num_visible_products = len(products)
+
+    if num_visible_products == 0:
+        return {
+            "answer": "There are no visible products on the screen to answer your question."
+        }
 
     product_descriptions = "\\n".join([
         f"- {p.title} by {p.brand}, priced at {p.price}, located in the {p.positionLabel} (bounding box: top={p.boundingBox.top:.0f}, left={p.boundingBox.left:.0f}, width={p.boundingBox.width:.0f}, height={p.boundingBox.height:.0f})"
-        for p in request.visible_products
+        for p in products
     ])
 
     prompt = f"""
@@ -68,5 +75,16 @@ async def ask_question(request: QueryRequest):
         model="gemini-2.5-flash", contents=prompt
     )
 
-    return {"answer": response.text}
+    try:
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash", contents=prompt
+        )
+        return {"answer": response.text}#.strip()}
+    except Exception as e:
+        return {
+            "answer": f"Sorry, something went wrong while processing your request. (Error: {str(e)})"
+        }
+
+
 
