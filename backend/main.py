@@ -5,10 +5,10 @@ from pydantic import BaseModel
 from typing import List
 from google import genai
 import os
-#from dotenv import load_dotenv
-
+from dotenv import load_dotenv
+#
 # Load environment variables from .env file
-#load_dotenv()
+load_dotenv()
 api_key=os.getenv("GEMINI_API_KEY")
 
 app = FastAPI()
