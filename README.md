@@ -22,8 +22,6 @@ docker-compose up --build
 - Frontend: http://localhost:3000
 - Backend Docs: http://localhost:8000/docs
 
-## 🧪 Example Shoes in Grid
+## 🧪 Cloned and tested on ASUS TUF F15 on 2025/7/24
 
-- Adidas Galaxy 7 – £45 – Great beginner budget shoe
-- Hoka Clifton 9 – £109 – Cushioned daily trainer
-- Under Armour Surge 4 – £37 – Gym/training all-rounder
+
