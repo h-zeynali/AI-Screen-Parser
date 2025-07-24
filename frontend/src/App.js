@@ -6,6 +6,10 @@ import useVisibleProducts from "./hooks/useVisibleProducts";
 
 
 
+function formatMarkdownBoldToHtml(text) {
+  // Convert **word** to <strong>word</strong> with spacing
+  return text.replace(/\*\*(.*?)\*\*/g, '&nbsp;<strong>$1</strong>&nbsp;');
+}
 
 
 function App() {
@@ -40,7 +44,17 @@ function App() {
         />
         <button onClick={handleSubmit}>Ask</button>
       </div>
-      {answer && <div className="answer">{answer}</div>}
+      {<div className="answer">
+      {answer && (
+        <div 
+          style={{ whiteSpace: "pre-wrap", marginTop: "1rem", lineHeight: 1.6 }}
+          dangerouslySetInnerHTML={{
+            __html: formatMarkdownBoldToHtml(answer),
+          }}
+        />
+      )}
+      </div>}
+
       <ProductGrid products={products} refs={refs} />
     </div>
   );
