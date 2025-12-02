@@ -3,13 +3,13 @@
 
 This is a full-stack application showing sport shoe products in a grid layout. Users can ask questions based on visible products using AI (Google Gemini).
 
-## 📦 Tech Stack
+##  Tech Stack
 - Frontend: React
 - Backend: FastAPI
 - LLM: Google Gemini
 - Docker + Docker Compose
 
-## ⚙️ Running the App
+##  Running the App
 
 ### 1. Add your GEMINI API key in docker-compose.yml
 
@@ -22,6 +22,6 @@ docker-compose up --build
 - Frontend: http://localhost:3000
 - Backend Docs: http://localhost:8000/docs
 
-## 🧪 Cloned and tested on ASUS TUF F15 on 2025/7/24
+##  Cloned and tested on ASUS TUF F15 on 2025/7/24
 
 
